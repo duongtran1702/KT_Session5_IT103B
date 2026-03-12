@@ -25,6 +25,7 @@ public class Main {
         String category = input.nextLine();
 
         if (!ids.contains(id)) {
+            ids.add(id);
             products.add(new Product(id, name, price, quantity, category));
         } else throw new InvalidProductException("Id already exists");
     }
@@ -55,7 +56,13 @@ public class Main {
     }
 
     public void delete() {
-        products.removeIf(p -> p.getQuantity() == 0);
+        products.removeIf(p -> {
+            if (p.getQuantity() == 0) {
+                ids.remove(p.getId());
+                return true;
+            }
+            return false;
+        });
         System.out.println("Product has been deleted");
     }
 
